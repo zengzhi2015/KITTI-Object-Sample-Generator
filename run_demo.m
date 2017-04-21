@@ -49,10 +49,12 @@ velodyne_dir = '/home/zhi/Downloads/KITTI/data_object_velodyne/training/velodyne
 nimages = length(dir(fullfile(image_dir, '*.png')));
 
 % set up figure
-h = visualization('init',image_dir);
+[h,sz] = visualization('init',image_dir);
+
+%%
 
 % main loop
-img_idx=0;
+img_idx=1010;
 while 1
 
   % load projection matrix
@@ -62,7 +64,7 @@ while 1
   objects = readLabels(label_dir,img_idx);
   
   % visualization update for next frame
-  visualization('update',image_dir,h,img_idx,nimages,data_set);
+  sz = visualization('update',image_dir,h,img_idx,nimages,data_set);
  
   % for all annotated objects do
   for obj_idx=1:numel(objects)
@@ -78,9 +80,11 @@ while 1
   end
   
   % Draw Velodyne points
-  [cloud,reflection] = readVelodyne( velodyne_dir, img_idx );
-  drawVelodyne( h,cloud, reflection, P )
-
+  point_cloud = readVelodyne( velodyne_dir, img_idx );
+  [ P2,R0_rect,Tr_velo_to_cam ] = readAllCalibration( calib_dir,img_idx );
+  [ cloud_2D,D,R ] = computeVelodyne3D( point_cloud, P2,R0_rect,Tr_velo_to_cam );
+  drawVelodyne( h, cloud_2D,D,R*200+0.0002,sz )
+  
   % force drawing and tiny user interface
   waitforbuttonpress; 
   key = get(gcf,'CurrentCharacter');
