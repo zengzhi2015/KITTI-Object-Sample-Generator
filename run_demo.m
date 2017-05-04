@@ -80,8 +80,9 @@ while 1
   end
   
   % Draw Velodyne points
-  point_cloud = readVelodyne( velodyne_dir, img_idx );
+  point_cloud = readVelodyne( velodyne_dir, img_idx ); % Read the point cloud
   [ P2,R0_rect,Tr_velo_to_cam ] = readAllCalibration( calib_dir,img_idx );
+  drawVelodyne3D( point_cloud,R0_rect,Tr_velo_to_cam )
   [ cloud_2D,D,R ] = computeVelodyne3D( point_cloud, P2,R0_rect,Tr_velo_to_cam );
   drawVelodyne( h, cloud_2D,D,R*200+0.0002,sz )
   
