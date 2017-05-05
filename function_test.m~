@@ -1,0 +1,15 @@
+clear
+clc
+load('point_cloud_sample.mat')
+
+X = point_cloud(1:2,:);
+y = point_cloud(3,:);
+
+b = robustfit(X,y)
+
+
+scatter3(point_cloud(1,:),point_cloud(2,:),point_cloud(3,:),1,'.')
+axis equal
+xlabel('x')
+ylabel('y')
+zlabel('z')

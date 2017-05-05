@@ -54,7 +54,7 @@ nimages = length(dir(fullfile(image_dir, '*.png')));
 %%
 
 % main loop
-img_idx=1010;
+img_idx=0;
 while 1
 
   % load projection matrix
@@ -77,6 +77,9 @@ while 1
     orientation = computeOrientation3D(objects(obj_idx),P);
     drawBox3D(h, objects(obj_idx),corners,face_idx,orientation);
     
+    % plot 2D rectangle
+    drawRect2D( h,objects(obj_idx),P );
+    
   end
   
   % Draw Velodyne points
@@ -84,7 +87,7 @@ while 1
   [ P2,R0_rect,Tr_velo_to_cam ] = readAllCalibration( calib_dir,img_idx );
   drawVelodyne3D( point_cloud,R0_rect,Tr_velo_to_cam )
   [ cloud_2D,D,R ] = computeVelodyne3D( point_cloud, P2,R0_rect,Tr_velo_to_cam );
-  drawVelodyne( h, cloud_2D,D,R*200+0.0002,sz )
+  drawVelodyne( h, cloud_2D,D,R,sz )
   
   % force drawing and tiny user interface
   waitforbuttonpress; 

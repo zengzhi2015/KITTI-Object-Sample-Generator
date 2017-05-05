@@ -12,14 +12,23 @@ P = cloud_2D(:,valid_index);
 D = distance(1,valid_index);
 R = reflection(1,valid_index);
 
-temp = jet;
+temp = jet; % This is a color wheel
 RGB = zeros(length(D),3);
-DD = (D+1)*4; DD(DD>64)=64;DD=round(DD);
+DD = (D+1)*2; DD(DD>64)=64;DD=round(DD);
 for i=1:length(D)
     RGB(i,:) = temp(65-DD(i),:);
 end
 
-scatter(h(3).axes,P(1,:),P(2,:),R,RGB,'.');
+RR = min(20,R*20) + 30.0;
+
+% RED = D/50; RED(RED>1)=1;RED=1-RED;
+% GREEN = 1-RED;%zeros(1,length(D));
+% BLUE = R;
+% 
+% RGB = [RED',GREEN',BLUE'];
+
+
+scatter(h(3).axes,P(1,:),P(2,:),RR,RGB,'.');
 
 end
 
